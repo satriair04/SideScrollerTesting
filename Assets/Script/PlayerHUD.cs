@@ -5,16 +5,12 @@ public class PlayerHUD : MonoBehaviour
 {
     //[SerializeField] private GameObject ExclamationMark;
     //[SerializeField] private GameObject QuestionMark;
-    public static PlayerHUD Instance;
+
     [SerializeField] private List<EmojiReference> listEmoji;
     private PlayerHUDEnum currentMark;
     private PlayerHUDEnum defaultMark = PlayerHUDEnum.HAMPA;
     private bool isActive = false;
 
-    private void Awake()
-    {
-        CreateInstance();
-    }
     private void Start()
     {
         isActive = false;
@@ -97,15 +93,6 @@ public class PlayerHUD : MonoBehaviour
         }
     }
 
-    private void CreateInstance()
-    {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-    }
 }
 
 public enum PlayerHUDEnum

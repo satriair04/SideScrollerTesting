@@ -10,7 +10,7 @@ public class Player : MonoBehaviour {
     //public KeyCode interactKey = KeyCode.F;
 
     [SerializeField] private bool usingFixedVelocity = false;
-    //[SerializeField] public PlayerHUD playerHUD;
+    [SerializeField] public PlayerHUD playerHUD;
     private Rigidbody2D rb2d;
     private Vector2 playerDirection;
     private bool isFacingRight = true;
@@ -143,7 +143,7 @@ public class Player : MonoBehaviour {
             //Properti playerHUD adalah GameObject pada class Player
             //checkPlayer.playerHUD.GetComponent<PlayerHUD>().ChangeMark(markType, markerStatus);
             Debug.Log("UPDATE HUD: GameObject = " + gameObject.name + " markType = " + check.markType + " markerStatus = " + markerStatus);
-            PlayerHUD.Instance.ChangeMark(check.markType, markerStatus);
+            playerHUD.ChangeMark(check.markType, markerStatus);
         }
     }
 }
