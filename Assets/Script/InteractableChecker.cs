@@ -40,9 +40,12 @@ public class InteractableChecker : MonoBehaviour
             return;
         }
         //GetKeyDown memastikan block if ini hanya tereksekusi sekali
-        if (Input.GetKey(InputManager.Instance.interactKey))
+        if (Input.GetKeyDown(InputManager.Instance.interactKey))
         {
-            nextEvent?.Invoke();
+            if(nextEvent != null)
+            {
+                nextEvent.Invoke();
+            }
         }
     }
     
