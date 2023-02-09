@@ -1,0 +1,1 @@
+Sudah tidak ada apapun disini.
