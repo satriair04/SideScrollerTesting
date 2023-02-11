@@ -5,7 +5,7 @@ using Ink.Runtime;
 public class DialogManager : MonoBehaviour
 {
     public static DialogManager Instance;
-    public GameObject dialogPanel;
+    public GameObject dialogPanel;          //Tinggal GetComponent<DialogUI> kalau butuh DialogUI
 
     private bool flagDialogActive;
     private bool flagDialogEnded;
@@ -36,36 +36,64 @@ public class DialogManager : MonoBehaviour
         }
     }
 
+    //INITIALIZATION : DialogTrigger akan panggil ini untuk memulai dialog
     public void StartInkDialog(TextAsset inkDialogJSON)
     {
         if (inkDialogJSON == null)
         {
-            Debug.Log("Dialognya ga ada");
+            //Debug.Log("Dialognya ga ada");
             return;
         }
-        currentInkyStory = new Story(inkDialogJSON.text);
+        //PENTING : Set data & aktifkan panel UI-nya
+        currentInkyStory = new Story(inkDialogJSON.text);   //PENTING : Convert inkJSON format ke data Story
         flagDialogActive = true;
         dialogPanel.SetActive(flagDialogActive);
+
+        //PENTING : Untuk munculkan 1st line - dan seterusnya
         ContinueNextLine();
-        Debug.Log("Dialog dijalankan, Method StartInkDialog telah dieksekusi");
     }
 
     public void ContinueNextLine()
     {
+        //PENTING : Cek dulu apakah masih bisa continue
         if (currentInkyStory.canContinue)
         {
             //Continue() untuk return string dari satu line aja
             dialogPanel.GetComponent<DialogUI>().SetDialogLinetext(currentInkyStory.Continue());
-            //Cek jika ada choices
+
+            //PENTING 50-50 :Cek jika ada implementasi choices pada file inkJSON.
             if (currentInkyStory.currentChoices.Count > 0)
             {
-                //Cetak tombol
+                //Aktifkan choice panel
+                dialogPanel.GetComponent<DialogUI>().ActivateChoicePanel(true);
+                //Set choices, bikin button, beri onClickListener pada button tadi 
+                for (int i = 0; i < currentInkyStory.currentChoices.Count; i++)
+                {
+                    Choice choice = currentInkyStory.currentChoices[i];
+                    dialogPanel.GetComponent<DialogUI>().CreateChoiceButton(choice.text.Trim(), choice);
+                }
+            }
+            else
+            {
+                dialogPanel.GetComponent<DialogUI>().ActivateChoicePanel(false);
             }
         }
         else
         {
             ExitInkDialog();
         }
+    }
+
+    //Bakal dipanggil dari DialogUI
+    public void SelectChoice(Choice choice)
+    {
+        if(currentInkyStory.currentChoices.Count <= 0 || currentInkyStory == null)
+        {
+            return;     //Error-catcher. Hentikan eksekusi
+        }
+        //PENTING : Membuat agar currentInkyStory melanjutkan cerita sesuai dengan choice yang dipilih.
+        currentInkyStory.ChooseChoiceIndex(choice.index);
+        ContinueNextLine();
     }
 
     public void ExitInkDialog()

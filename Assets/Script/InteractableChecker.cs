@@ -15,6 +15,7 @@ public class InteractableChecker : MonoBehaviour
     public UnityEvent nextEvent;                            //Event yang akan di-Invoke ketika kondisi memenuhi
 
     public bool isPlayerTouching = false;                   //Default. Flag cek kolisi bersentuhan
+
     protected virtual void FixedUpdate()
     {
         InteractionCheck();
@@ -39,16 +40,26 @@ public class InteractableChecker : MonoBehaviour
         {
             return;
         }
-        //GetKeyDown memastikan block if ini hanya tereksekusi sekali
+        //GetKey bakal eksekusi terus
         if (Input.GetKey(InputManager.Instance.interactKey))
         {
-            if(nextEvent != null)
+            Debug.Log("Tombol ditekan/hold press: ");
+            if (nextEvent != null)
             {
-                nextEvent.Invoke();
+                //Percobaan untuk memastikan baris ini tidak terlalu banyak dieksekusi
+                Debug.Log("Tombol dilepas/release. EKSEKUSI!");
+                StartCoroutine(StartInvokeNextEvent());
             }
         }
     }
     
+    IEnumerator StartInvokeNextEvent()
+    {
+        nextEvent?.Invoke();
+        yield return new WaitForSeconds(1f);
+    }
+
+
     //Collider trigger pada Base/Turunan dari objek ini dihandle oleh Player collider
     //Ubah boolean isPlayerTouching ketika Enter, Stay ataupun Exit
 

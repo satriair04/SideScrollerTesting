@@ -12,6 +12,7 @@ public class InventoryUI : MonoBehaviour
     public Image itemImageSprite;
 
     [Header("Parent n Child for Tombol Item")]
+    [SerializeField] private Transform choiceBoxWrapper;
     [SerializeField] private Transform itemButtonParentSpawner;
     [SerializeField] private Transform itemButtonChildTemplate;
     private bool isActiveState = false;         //Default

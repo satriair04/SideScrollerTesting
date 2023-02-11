@@ -1,1 +1,1 @@
-Sudah tidak ada apapun disini.
+Sudah tidak ada apapun disini. Cek Inventori kamu.
