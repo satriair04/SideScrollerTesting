@@ -15,7 +15,7 @@ public class InteractableChecker : MonoBehaviour
     public UnityEvent nextEvent;                            //Event yang akan di-Invoke ketika kondisi memenuhi
 
     public bool isPlayerTouching = false;                   //Default. Flag cek kolisi bersentuhan
-
+    protected bool isInteracting = false;                   //Bismillah. Tes cegah rapid eksekusi
     protected virtual void FixedUpdate()
     {
         InteractionCheck();
@@ -41,22 +41,28 @@ public class InteractableChecker : MonoBehaviour
             return;
         }
         //GetKey bakal eksekusi terus
+        //Input.GetKey(InputManager.Instance.interactKey)
         if (Input.GetKey(InputManager.Instance.interactKey))
         {
-            Debug.Log("Tombol ditekan/hold press: ");
-            if (nextEvent != null)
+            Debug.Log("Key ditekan/Hold: ");
+            if (isInteracting)
             {
-                //Percobaan untuk memastikan baris ini tidak terlalu banyak dieksekusi
-                Debug.Log("Tombol dilepas/release. EKSEKUSI!");
-                StartCoroutine(StartInvokeNextEvent());
+                Debug.Log("Key ditekan/Hold tidak dieksekusi: ");
+                return;
             }
+            isInteracting = true;
+            //Percobaan untuk memastikan baris ini tidak terlalu banyak dieksekusi
+            Debug.Log("Tombol dilepas/release. EKSEKUSI!");
+            StartCoroutine(StartInvokeNextEvent());
         }
     }
     
     IEnumerator StartInvokeNextEvent()
     {
         nextEvent?.Invoke();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.1f);
+        isInteracting = false;
+        Debug.Log("SELESAI EKSEKUSI");
     }
 
 

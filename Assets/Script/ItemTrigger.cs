@@ -48,6 +48,9 @@ public class ItemTrigger : InteractableChecker, IFInteractable
     {
         //Update PlayerHUD
         this.markType = PlayerHUDEnum.HAMPA;
+        //Jalankan methodnya sekali
+        FindObjectOfType<PlayerHUD>().ChangeMark(this.markType, false);
+        FindObjectOfType<PlayerHUD>().AutoPlayMark();
         //PlayerHUD.Instance.ChangeMark(this.markType, isPlayerTouching);
     }
 

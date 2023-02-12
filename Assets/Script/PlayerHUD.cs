@@ -24,7 +24,7 @@ public class PlayerHUD : MonoBehaviour
         AutoPlayMark();
     }
 
-    private void AutoPlayMark()
+    public void AutoPlayMark()
     {
         if (isActive)
         {
